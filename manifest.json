@@ -1,0 +1,14 @@
+{
+  "name": "New Tab - Github",
+  "version": "2.0.1",
+  "manifest_version": 3,
+  "chrome_url_overrides": {
+    "newtab": "dist/index.html"
+  },
+  "permissions": ["storage", "unlimitedStorage"],
+  "icons": {
+    "16": "/dist/favicon-16x16.png",
+    "32": "/dist/favicon-32x32.png",
+    "48": "/dist/favicon-64x64.png"
+  }
+}
