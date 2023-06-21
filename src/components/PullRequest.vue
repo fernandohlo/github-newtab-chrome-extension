@@ -1,56 +1,53 @@
 <script setup lang="ts">
+  import { watch, ref } from 'vue';
   import User from './User.vue';
+  import { getPRReview, getPR } from '../services/pr/repository.js';
 
-  defineProps({
-    items: Array<any>
+  const props = defineProps({
+    item: {
+      type: Object,
+      required: true,
+      default: {}
+    },
   });
 
-  const getCssClasses = (item:any) => {
-    const cssClass = [];
-    const GITHUB_USER = localStorage.getItem('GITHUB_USER');
+  const prReviews = ref<any[]>([]);
+  const prInfo = ref();
 
-    if (item.reviewsInfo.some((review:any) => review.user.login === GITHUB_USER && (review.state === 'APPROVED' || review.state === 'CHANGES_REQUESTED'))) {
-      cssClass.push('me');
-    }
-
-    if (item.labels.some((label:any) => label.name === 'status/work-in-progress')) {
-      cssClass.push('disabled');
-    }
-
-    return cssClass;
-  };
-
-  const isImportantBranch = (item:any) => {
+  const isImportantBranch = () => {
     return (
-      item.prInfo.base.ref === 'release' ||
-      item.prInfo.base.ref === 'main'
+      prInfo.value.base.ref === 'release' ||
+      prInfo.value.base.ref === 'main'
     );
   };
+
+  watch(() => props.item, async (newItem) => {
+    prReviews.value = await getPRReview(newItem.number);
+    prInfo.value = await getPR(newItem.number);
+  }, { immediate: true });
 </script>
 
 <template>
-  <ul>
-    <li v-for="item in items" :class="getCssClasses(item)">
-      <span class="icon">
-        <user :user="item.user" />
+  <template v-if="prInfo && prInfo.head">
+    <span class="icon">
+      <user :user="item.user" />
+    </span>
+    <a :href="item.html_url">
+      {{ item.title }}<br/>
+      <span class="login">{{ item.user.login }} #{{ item.number }} > {{ prInfo.head.ref }} </span>
+    </a>
+    <span class="branch" :class="{ important: isImportantBranch() }">
+      <b>{{ prInfo.base.ref }}</b>
+    </span>
+    <span class="info">
+      <template v-for="review in prReviews">
+        <user :user="review.user" :review="review" />
+      </template>
+      <span class="status" :class="{ merge: prInfo.mergeable, ok: prInfo.mergeable_state === 'clean' }">
+        ✓
       </span>
-      <a :href="item.html_url">
-        {{ item.title }}<br/>
-        <span class="login">{{ item.user.login }} #{{ item.number }} > {{ item.prInfo.head.ref }} </span>
-      </a>
-      <span class="branch" :class="{ important: isImportantBranch(item) }">
-        <b>{{ item.prInfo.base.ref }}</b>
-      </span>
-      <span class="info">
-        <template v-for="review in item.reviewsInfo">
-          <user :user="review.user" :review="review" />
-        </template>
-        <span class="status" :class="{ merge: item.prInfo.mergeable, ok: item.prInfo.mergeable_state === 'clean' }">
-          ✓
-        </span>
-      </span>
-    </li>
-  </ul>
+    </span>
+  </template>
 </template>
 
 <style scoped>

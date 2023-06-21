@@ -1,14 +1,14 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { listPRsUser, listPRsReviewRequested, listPRsSquad, listPRsInternal, listPRs } from '../services/pr/repository.js';
-  import PullRequest from './PullRequest.vue';
+  import { ref, computed, watch } from 'vue';
+  import PullRequests from './PullRequests.vue';
+  import { filterByLabel, filterByUser, filterByReviewUser, filterForAdmin } from '../services/pr/filter.js';
 
   const mapTypeFactory:Object = {
-    'user': listPRsUser,
-    'me': listPRsReviewRequested,
-    'squad': listPRsSquad,
-    'label': listPRsInternal,
-    'admin': listPRs
+    'user': filterByUser,
+    'me': filterByReviewUser,
+    'squad': filterByLabel,
+    'label': filterByLabel,
+    'admin': filterForAdmin
   };
 
   const props = defineProps({
@@ -17,6 +17,10 @@
       required: true,
       default: 'user'
     },
+    prs: {
+      type: Array,
+      required: true
+    },
     filter: String,
     title: String,
     id: String,
@@ -24,24 +28,20 @@
   });
 
   const items = ref([]);
-  const total = ref(0);
-
-  onMounted(async () =>{
-    const typeFactory:Function = mapTypeFactory[props.type as keyof Object];
-    
-    items.value = await typeFactory(props.filter);
-    total.value = items.value.length;
-
-    setInterval(async () => {
-      items.value = await typeFactory(props.filter);
-    }, 180000); // 3min
+  const total = computed(() => {
+    return items.value.length;
   });
+  const typeFactory:Function = mapTypeFactory[props.type as keyof Object];
+
+  watch(() => props.prs, (prs) => {
+    items.value = typeFactory(prs, props.filter);
+  }, { immediate: true });
 </script>
 
 <template>
   <div id="{{ id }}" class="wrapper-info-data" :class="cssClass">
     <h2><em>{{ total }}</em>{{ title }}</h2>
-    <pull-request :items="items" />
+    <pull-requests :items="items" v-if="items.length > 0" />
   </div>
 </template>
 

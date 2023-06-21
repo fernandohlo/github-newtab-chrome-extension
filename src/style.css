@@ -52,6 +52,59 @@ body {
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.66) 65%, rgba(255,255,255,0) 99%);
 }
+
+.loading {
+  text-align: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.082);
+  bottom: 10rem;
+  min-height: 150px;
+  padding-top: 150px;
+  width: 100%;
+}
+
+.loading .text {
+  color: whitesmoke;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.loader {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  position: relative;
+  top: 8px;
+  left: -4px;
+  animation: rotate 1s linear infinite
+}
+.loader::before , .loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite ;
+}
+.loader::after{
+  transform: rotate3d(90, 90, 0, 180deg );
+  border-color: coral;
+}
+
+@keyframes rotate {
+  0%   {transform: rotate(0deg)}
+  100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+    75%, 100%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+}
+
 .wrapper-info-blocks {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -97,6 +150,7 @@ body {
   border-bottom: 1px solid #1f23282a;
   border-left: 3px solid rgba(245, 245, 245, 0.1);
   padding: 7px;
+  min-height: 35px;
 }
 .wrapper-info-data li.me {
   border-left-color: aquamarine;
