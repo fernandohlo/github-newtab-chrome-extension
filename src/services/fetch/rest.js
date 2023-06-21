@@ -1,7 +1,7 @@
 import { getHeaders } from './headers.js';
 import { setCache, availableInCache } from '../cache/index.js';
 
-export async function rest(url, cacheKey) {
+export async function rest (url, cacheKey) {
   const dataFromCache = await availableInCache(cacheKey);
   if (dataFromCache) {
     return dataFromCache;

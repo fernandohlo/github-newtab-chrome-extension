@@ -1,4 +1,4 @@
-export function getHeaders(user) {
+export function getHeaders () {
   const headers = new Headers();
   const GITHUB_TOKEN = localStorage.getItem('GITHUB_TOKEN');
 

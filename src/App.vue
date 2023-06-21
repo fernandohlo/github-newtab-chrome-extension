@@ -1,20 +1,25 @@
 <script setup lang="ts">
-  import { onMounted } from 'vue'
-  import { start } from './services/app.js';
+  import { ref } from 'vue'
+  import Clock from './components/Clock.vue';
+  import Dashboard from './components/Dashboard.vue';
 
-  onMounted(() => {
-    start();
-  })
+  import { getManifest } from './services/manifest.js';
+  import { setUnsplashPhoto } from './services/unsplash.js';
+
+  const manifestData = getManifest();
+  const version = ref(manifestData.version);
+
+  setUnsplashPhoto();
 </script>
 
 <template>
   <div class="wrapper-info">
     <div class="top">
-      <div id="clock" class="wrapper-info-clock"></div>
-      <h1>Github dashboard <em>♥ <a href="https://github.com/fernandohlo">@fernandohlo</a> | <span id="version" class="version"></span></em></h1>
+      <clock />
+      <h1>Github dashboard <em>♥ <a href="https://github.com/fernandohlo">@fernandohlo</a> | <span class="version">{{ version }}</span></em></h1>
     </div>
     <div class="end">
-      <div id="data_blocks" class="wrapper-info-blocks"></div>
+      <dashboard />
     </div>
   </div>
 </template>

@@ -1,47 +1,61 @@
-import { rest } from '../fetch/rest.js';
-import { setCache, availableInCache } from '../cache/index.js';
+import { getPRsOpen, getPRReviewInfo, getPRsByUserReviewRequested, getPRInfo } from './provider.js';
+import { filterByLabel, filterByUser } from './filter.js';
 
-export function getPRsByLabel(label) {
-  const cacheKey = `prs-${label}`;
-  return rest(`https://api.github.com/search/issues?q=repo:inditex/web-ecommercebershkafrontnodejs+is:open+is:pr+label:${label}`, cacheKey);
+export async function listPRs () {
+  const items = await getPRsOpen();
+
+  for (const item of items) {
+    item.reviewsInfo = await getPRReviewInfo(item.number);
+    item.prInfo = await getPRInfo(item.number);
+  };
+
+  return items;
 }
 
-export function getPRsByUserAssignee(user) {
-  const cacheKey = `prs-u-${user}`;
-  return rest(`https://api.github.com/search/issues?q=repo:inditex/web-ecommercebershkafrontnodejs+is:open+is:pr+assignee:${user}`, cacheKey);
+export async function listPRsSquad (filter) {
+  const result = await getPRsOpen();
+  const items = filterByLabel(result, filter);
+
+  for (const item of items) {
+    item.reviewsInfo = await getPRReviewInfo(item.number);
+    item.prInfo = await getPRInfo(item.number);
+  };
+
+  return items;
 }
 
-export function getPRsByUserReviewRequested() {
-  const cacheKey = `prs-me`;
-  return rest(`https://api.github.com/search/issues?q=repo:inditex/web-ecommercebershkafrontnodejs+is:open+is:pr+user-review-requested:@me`, cacheKey);
+export async function listPRsInternal (filter) {
+  const result = await getPRsOpen();
+  const items = filterByLabel(result, filter);
+
+  for (const item of items) {
+    item.reviewsInfo = await getPRReviewInfo(item.number);
+    item.prInfo = await getPRInfo(item.number);
+  };
+
+  return items;
 }
 
-export function getPRsOpen() {
-  const cacheKey = `prs`;
-  return rest(`https://api.github.com/repos/inditex/web-ecommercebershkafrontnodejs/pulls?state=open&per_page=150`, cacheKey);
+export async function listPRsUser (filter) {
+
+  const result = await getPRsOpen();
+  const items = filterByUser(result, filter);
+
+  for (const item of items) {
+    item.reviewsInfo = await getPRReviewInfo(item.number);
+    item.prInfo = await getPRInfo(item.number);
+  };
+
+  return items;
 }
 
-export async function getPRReviewInfo(number) {
-  const cacheKey = `pr-reviews-${number}`;
-  let result = await rest(`https://api.github.com/repos/inditex/web-ecommercebershkafrontnodejs/pulls/${number}/reviews`, cacheKey);
+export async function listPRsReviewRequested () {
+  const result = await getPRsByUserReviewRequested();
 
-  if (result && Array.isArray(result)) {
-    const reversed = result.reverse();
-    const users = {};
-    result = reversed.filter((review) => {
-      if (users[review.user.login]) {
-        return false;
-      } else {
-        users[review.user.login] = true;
-        return true;
-      }
-    });
-  }
+  for (const item of result.items) {
+    item.reviewsInfo = await getPRReviewInfo(item.number);
+    item.prInfo = await getPRInfo(item.number);
+  };
 
-  return result;
-}
-
-export function getPRInfo(number) {
-  const cacheKey = `pr-${number}`;
-  return rest(`https://api.github.com/repos/inditex/web-ecommercebershkafrontnodejs/pulls/${number}`, cacheKey);
+  return result.items;
 }

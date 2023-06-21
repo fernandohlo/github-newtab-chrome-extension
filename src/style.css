@@ -141,6 +141,10 @@ body {
   color: whitesmoke;
   padding: 4px 10px;
   border-radius: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 120px;
 }
 .wrapper-info-data .branch.important b {
   background-color: coral;

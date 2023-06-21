@@ -15,7 +15,6 @@ export async function getCache(key) {
   return await cacheProvider.get(key);
 }
 
-  
 export async function availableInCache(key) {
   const lastUpdated = await getCache(`updated-${key}`);
   const diffTime = Math.abs(lastUpdated - Date.now()) / 1000;
@@ -43,6 +42,10 @@ function _getCacheProvider () {
 
   return {
     get: async (param) => await localStorage.getItem(param),
-    set: async (param) => await localStorage.setItem(param[0], param[1])
+    set: async (param) => {
+      const key = Object.keys(param)[0];
+      const value = param.key;
+      return await localStorage.setItem(key, value);
+    }
   }
 }
