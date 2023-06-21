@@ -44,7 +44,7 @@ function _getCacheProvider () {
     get: async (param) => await localStorage.getItem(param),
     set: async (param) => {
       const key = Object.keys(param)[0];
-      const value = param.key;
+      const value = param[key];
       return await localStorage.setItem(key, value);
     }
   }
