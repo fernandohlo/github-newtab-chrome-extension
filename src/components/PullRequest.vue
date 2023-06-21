@@ -22,7 +22,12 @@
   };
 
   watch(() => props.item, async (newItem) => {
-    prReviews.value = await getPRReview(newItem.number);
+    prReviews.value = [...await getPRReview(newItem.number), ...newItem.requested_reviewers.map((user:any) => {
+      return {
+        user,
+        state: 'PENDING'
+      }
+    })]; 
     prInfo.value = await getPR(newItem.number);
   }, { immediate: true });
 </script>

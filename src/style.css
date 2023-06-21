@@ -232,6 +232,9 @@ body {
   position: relative;
   background-repeat: no-repeat;
 }
+.wrapper-info-data .user.pending {
+  opacity: 0.5;
+}
 .wrapper-info-data .user .tick {
   text-align: center;
   width: 15px;
