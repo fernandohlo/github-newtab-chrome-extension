@@ -17,6 +17,9 @@ GITHUB_LABEL_IMPORTANT -> 'priority'
 ## GITHUB_UNSPLASH_IMAGE (optional)
 GITHUB_UNSPLASH_IMAGE -> https://images.unsplash.com/photo-1686033195400-f2a0df814694?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2500&q=80
 
+# Instalar
+`npm i` + `npm run build`
+
 # Vue 3 + TypeScript + Vite
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
