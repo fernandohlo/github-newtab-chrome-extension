@@ -18,7 +18,10 @@ GITHUB_LABEL_IMPORTANT -> 'priority'
 GITHUB_UNSPLASH_IMAGE -> https://images.unsplash.com/photo-1686033195400-f2a0df814694?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2500&q=80
 
 # Instalar
-`npm i` + `npm run build`
+1. `npm i` + `npm run build`.
+2. Cargar extensión descromprimida.
+3. Abrir nueva pestaña y aceptar la nueva extensión.
+4. Abrir las devtools de nueva pestaña y en local storage añadir (clave/valor) GITHUB_TOKEN, GITHUB_USER...el resto son opicionales.
 
 # Vue 3 + TypeScript + Vite
 
