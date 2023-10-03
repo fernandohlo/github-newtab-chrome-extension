@@ -50,7 +50,7 @@ body {
   align-self: flex-end;
   margin: 0 auto;
   background: rgb(0,0,0);
-  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.66) 65%, rgba(255,255,255,0) 99%);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.66) 75%, rgba(255,255,255,0) 99%);
 }
 
 .loading {
@@ -106,14 +106,7 @@ body {
 }
 
 .wrapper-info-blocks {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-  grid-auto-rows: minmax(100px, auto);
   padding: 30px;
-}
-.wrapper-info-data.w100 {
-  grid-column: span 2;
 }
 .wrapper-info-data h2 {
   font-size: 1.15rem;
@@ -139,8 +132,9 @@ body {
   list-style: none;
   border-radius: 10px;
   background-color: rgba(245, 245, 245, 0.15);
+  margin-bottom: 50px;
 }
-.wrapper-info-data.w100 ul {
+.wrapper-info-data ul {
   columns: 2;
   column-gap: 20px;
 }
@@ -150,7 +144,7 @@ body {
   border-bottom: 1px solid #1f23282a;
   border-left: 3px solid rgba(245, 245, 245, 0.1);
   padding: 7px;
-  min-height: 35px;
+  min-height: 38px;
 }
 .wrapper-info-data li.me {
   border-left-color: aquamarine;
@@ -163,7 +157,7 @@ body {
 }
 .wrapper-info-data li a {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   width: 100%;

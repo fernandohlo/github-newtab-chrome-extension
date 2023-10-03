@@ -1,44 +1,44 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
-  import PullRequestsBlock from './PullRequestsBlock.vue';
-  import { listPRs } from '../services/pr/repository.js';
-  import { clearAll } from '../services/cache/index.js';
+import { onMounted, ref } from 'vue';
+import PullRequestsBlock from './PullRequestsBlock.vue';
+import { listPRs } from '../services/pr/repository.js';
+import { clearAll } from '../services/cache/index.js';
 
-  const GITHUB_USER = localStorage.getItem('GITHUB_USER');
-  const GITHUB_LABEL = localStorage.getItem('GITHUB_LABEL');
-  const GITHUB_LABEL_IMPORTANT = localStorage.getItem('GITHUB_LABEL_IMPORTANT');
+const GITHUB_USER = localStorage.getItem('GITHUB_USER') || undefined;
+const GITHUB_LABEL = localStorage.getItem('GITHUB_LABEL');
+const GITHUB_LABEL_IMPORTANT = localStorage.getItem('GITHUB_LABEL_IMPORTANT');
 
-  const modeAdmin = ref(false);
-  const PRs = ref([]);
+const modeAdmin = ref(false);
+const PRs = ref([]);
 
-  onMounted(async () => {
-    PRs.value = await listPRs();
+onMounted(async () => {
+  PRs.value = await listPRs();
 
-    const keysPressed:any = {};
-    document.addEventListener('keydown', async (event) => {
-      keysPressed[event.key] = true;
+  const keysPressed:any = {};
+  document.addEventListener('keydown', async (event) => {
+    keysPressed[event.key] = true;
 
-      if (keysPressed['Control'] && event.code =='Space') {
-        PRs.value = [];
-        await clearAll();
-        PRs.value = await listPRs();
-        return;
-      }
-      if(event.code === 'Space') {
-        modeAdmin.value = !modeAdmin.value;
-        return;
-      }
-    });
-
-    document.addEventListener('keyup', (event) => {
-      delete keysPressed[event.key];
-    });
-
-    setInterval(async () => {
+    if (keysPressed.Control && event.code === 'Space') {
       PRs.value = [];
+      await clearAll();
       PRs.value = await listPRs();
-    }, 300000); // 5min
-  })
+      return;
+    }
+    if (event.code === 'Space') {
+      modeAdmin.value = !modeAdmin.value;
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    delete keysPressed[event.key];
+  });
+
+  setInterval(async () => {
+    PRs.value = [];
+    await clearAll();
+    PRs.value = await listPRs();
+  }, 300000); // 5min
+});
 </script>
 
 <template>

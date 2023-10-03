@@ -1,6 +1,6 @@
 {
   "name": "New Tab - Github",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "manifest_version": 3,
   "chrome_url_overrides": {
     "newtab": "dist/index.html"

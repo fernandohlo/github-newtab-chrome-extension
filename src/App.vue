@@ -1,15 +1,17 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Clock from './components/Clock.vue';
-  import Dashboard from './components/Dashboard.vue';
+import { ref, onBeforeMount } from 'vue';
+import Clock from './components/Clock.vue';
+import Dashboard from './components/Dashboard.vue';
 
-  import { getManifest } from './services/manifest.js';
-  import { setUnsplashPhoto } from './services/unsplash.js';
+import { getManifest } from './services/manifest.js';
+import { setUnsplashPhoto } from './services/unsplash.js';
 
-  const manifestData = getManifest();
-  const version = ref(manifestData.version);
+const manifestData = getManifest();
+const version = ref(manifestData.version);
 
+onBeforeMount(() => {
   setUnsplashPhoto();
+});
 </script>
 
 <template>

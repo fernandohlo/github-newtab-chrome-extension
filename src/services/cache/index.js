@@ -1,8 +1,9 @@
+/* eslint-disable no-undef */
 const TTL = 180; // 3min
-const PREFIX = 'cache-gtn-'
+const PREFIX = 'cache-gtn-';
 const cacheProvider = _getCacheProvider();
 
-export async function setCache(key, value) {
+export async function setCache (key, value) {
   const keyValue = {};
   keyValue[PREFIX + key] = value;
   await cacheProvider.set(keyValue);
@@ -16,17 +17,17 @@ export async function clearAll () {
   Object.entries(localStorage).map(
     x => x[0]
   ).filter(
-    x => x.substring(0,10) == PREFIX
+    x => x.substring(0, 10) === PREFIX
   ).map(
     x => localStorage.removeItem(x)
   );
 }
-  
-export async function getCache(key) {
+
+export async function getCache (key) {
   return await cacheProvider.get(PREFIX + key);
 }
 
-export async function availableInCache(key) {
+export async function availableInCache (key) {
   const lastUpdated = await getCache(`${PREFIX}updated-${key}`);
   const diffTime = Math.abs(lastUpdated - Date.now()) / 1000;
 
@@ -44,22 +45,22 @@ function _getCacheProvider () {
   if (chrome && chrome.storage && chrome.storage.local) {
     return {
       get: async (param) => {
-        const result = await chrome.storage.local.get([param])
+        const result = await chrome.storage.local.get([param]);
         return result[param];
       },
       set: async (param) => await chrome.storage.local.set(param)
-    }
+    };
   }
 
   return {
     get: async (param) => {
       const value = await localStorage.getItem(param);
-      return JSON.parse(value)
+      return JSON.parse(value);
     },
     set: async (param) => {
       const key = Object.keys(param)[0];
       const value = JSON.stringify(param[key]);
       return await localStorage.setItem(key, value);
     }
-  }
+  };
 }

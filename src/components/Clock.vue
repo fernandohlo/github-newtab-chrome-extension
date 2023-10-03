@@ -1,22 +1,22 @@
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-  const toggle = ref(false);
-  const h = ref('');
-  const m = ref('');
+const toggle = ref(false);
+const h = ref('');
+const m = ref('');
 
-  const _startTime = () => {
-    const today = new Date();
-    h.value = today.getHours().toString();
-    m.value = today.getMinutes().toString().padStart(2, '0');
+const _startTime = () => {
+  const today = new Date();
+  h.value = today.getHours().toString();
+  m.value = today.getMinutes().toString().padStart(2, '0');
 
-    toggle.value = !toggle.value;
-    setTimeout(_startTime, 500);
-  };
+  toggle.value = !toggle.value;
+  setTimeout(_startTime, 500);
+};
 
-  onMounted(() => {
-    _startTime();
-  })
+onMounted(() => {
+  _startTime();
+});
 </script>
 
 <template>

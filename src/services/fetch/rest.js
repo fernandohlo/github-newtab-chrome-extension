@@ -12,7 +12,7 @@ export async function rest (url, cacheKey) {
     headers: getHeaders(),
     redirect: 'follow'
   };
-  const response = await fetch(url, requestOptions)
+  const response = await fetch(url, requestOptions);
   const result = await response.json();
 
   await setCache(cacheKey, result);
