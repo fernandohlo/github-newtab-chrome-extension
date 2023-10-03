@@ -11,13 +11,13 @@ export function getPRsByUserAssignee (user) {
 }
 
 export function getPRsByUserReviewRequested () {
-  const cacheKey = `prs-me`;
-  return rest(`https://api.github.com/search/issues?q=repo:inditex/web-ecommercebershkafrontnodejs+is:open+is:pr+user-review-requested:@me`, cacheKey);
+  const cacheKey = 'prs-me';
+  return rest('https://api.github.com/search/issues?q=repo:inditex/web-ecommercebershkafrontnodejs+is:open+is:pr+user-review-requested:@me', cacheKey);
 }
 
 export function getPRsOpen () {
-  const cacheKey = `prs`;
-  return rest(`https://api.github.com/repos/inditex/web-ecommercebershkafrontnodejs/pulls?state=open&per_page=150`, cacheKey);
+  const cacheKey = 'prs';
+  return rest('https://api.github.com/repos/inditex/web-ecommercebershkafrontnodejs/pulls?state=open&per_page=150', cacheKey);
 }
 
 export async function getPRReviewInfo (number) {

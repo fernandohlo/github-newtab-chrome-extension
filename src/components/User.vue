@@ -1,18 +1,18 @@
 <script setup lang="ts">
-  defineProps({
-    user: Object as any,
-    review: Object as any
-  });
+defineProps({
+  user: Object as any,
+  review: Object as any
+});
 
-  const isValidReview = (review:any) => {
-    if (!review || review.state === 'PENDING') {
-      return true;
-    }
-    return (
-      review.state === 'APPROVED' ||
+const isValidReview = (review:any) => {
+  if (!review || review.state === 'PENDING') {
+    return true;
+  }
+  return (
+    review.state === 'APPROVED' ||
       review.state === 'CHANGES_REQUESTED'
-    );
-  };
+  );
+};
 </script>
 
 <template>

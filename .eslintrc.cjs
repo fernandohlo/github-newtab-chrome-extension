@@ -33,8 +33,6 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
-    'vue/multi-word-component-names': ['error', {
-      ignores: []
-    }]
+    'vue/multi-word-component-names': 'off'
   }
 };

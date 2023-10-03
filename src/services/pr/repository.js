@@ -5,8 +5,8 @@ export async function listPRs () {
 
   for (const item of items) {
     item.reviewsInfo = [];
-    item.prInfo = {}; 
-  };
+    item.prInfo = {};
+  }
 
   return items;
 }

@@ -1,35 +1,35 @@
 <script setup lang="ts">
-  import { watch, ref } from 'vue';
-  import User from './User.vue';
-  import { getPRReview, getPR } from '../services/pr/repository.js';
+import { watch, ref } from 'vue';
+import User from './User.vue';
+import { getPRReview, getPR } from '../services/pr/repository.js';
 
-  const props = defineProps({
-    item: {
-      type: Object,
-      required: true,
-      default: {}
-    },
-  });
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
+    default: () => {}
+  }
+});
 
-  const prReviews = ref<any[]>([]);
-  const prInfo = ref();
+const prReviews = ref<any[]>([]);
+const prInfo = ref();
 
-  const isImportantBranch = () => {
-    return (
-      prInfo.value.base.ref === 'release' ||
+const isImportantBranch = () => {
+  return (
+    prInfo.value.base.ref === 'release' ||
       prInfo.value.base.ref === 'main'
-    );
-  };
+  );
+};
 
-  watch(() => props.item, async (newItem) => {
-    prReviews.value = [...await getPRReview(newItem.number), ...newItem.requested_reviewers.map((user:any) => {
-      return {
-        user,
-        state: 'PENDING'
-      }
-    })]; 
-    prInfo.value = await getPR(newItem.number);
-  }, { immediate: true });
+watch(() => props.item, async (newItem) => {
+  prReviews.value = [...await getPRReview(newItem.number), ...newItem.requested_reviewers.map((user:any) => {
+    return {
+      user,
+      state: 'PENDING'
+    };
+  })];
+  prInfo.value = await getPR(newItem.number);
+}, { immediate: true });
 </script>
 
 <template>
@@ -45,7 +45,7 @@
       <b>{{ prInfo.base.ref }}</b>
     </span>
     <span class="info">
-      <template v-for="review in prReviews">
+      <template v-for="review in prReviews" :key="review.user.id">
         <user :user="review.user" :review="review" />
       </template>
       <span class="status" :class="{ merge: prInfo.mergeable, ok: prInfo.mergeable_state === 'clean' }">

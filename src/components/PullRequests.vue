@@ -1,29 +1,29 @@
 <script setup lang="ts">
-  import PullRequest from './PullRequest.vue';
+import PullRequest from './PullRequest.vue';
 
-  defineProps({
-    items: Array<any>
-  });
+defineProps({
+  items: Array<any>
+});
 
-  const getCssClasses = (item:any) => {
-    const cssClass = [];
-    const GITHUB_USER = localStorage.getItem('GITHUB_USER');
+const getCssClasses = (item:any) => {
+  const cssClass = [];
+  const GITHUB_USER = localStorage.getItem('GITHUB_USER');
 
-    if (item.reviewsInfo.some((review:any) => review.user.login === GITHUB_USER && (review.state === 'APPROVED' || review.state === 'CHANGES_REQUESTED'))) {
-      cssClass.push('me');
-    }
+  if (item.reviewsInfo.some((review:any) => review.user.login === GITHUB_USER && (review.state === 'APPROVED' || review.state === 'CHANGES_REQUESTED'))) {
+    cssClass.push('me');
+  }
 
-    if (item.labels.some((label:any) => label.name === 'status/work-in-progress')) {
-      cssClass.push('disabled');
-    }
+  if (item.labels.some((label:any) => label.name === 'status/work-in-progress')) {
+    cssClass.push('disabled');
+  }
 
-    return cssClass;
-  };
+  return cssClass;
+};
 </script>
 
 <template>
   <ul>
-    <li v-for="item in items" :class="getCssClasses(item)">
+    <li v-for="(item, index) in items" :class="getCssClasses(item)" :key="index">
      <pull-request :item="item" />
     </li>
   </ul>
