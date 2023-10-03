@@ -108,6 +108,12 @@ body {
 .wrapper-info-blocks {
   padding: 30px;
 }
+.wrapper-info-all-prs {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
 .wrapper-info-data h2 {
   font-size: 1.15rem;
   font-weight: 700;

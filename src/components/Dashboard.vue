@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import PullRequestsBlock from './PullRequestsBlock.vue';
 import { listPRs } from '../services/pr/repository.js';
 import { clearAll } from '../services/cache/index.js';
@@ -10,6 +10,8 @@ const GITHUB_LABEL_IMPORTANT = localStorage.getItem('GITHUB_LABEL_IMPORTANT');
 
 const modeAdmin = ref(false);
 const PRs = ref([]);
+
+const PRsCount = computed(() => PRs.value.length);
 
 onMounted(async () => {
   PRs.value = await listPRs();
@@ -46,6 +48,7 @@ onMounted(async () => {
     <span class="loader"></span> <span class="text">loading pull request ...</span>
   </div>
   <div class="wrapper-info-blocks" v-else>
+    <div class="wrapper-info-all-prs"><a href="https://github.com/inditex/web-ecommercebershkafrontnodejs/pulls">View all PRs ({{ PRsCount }})</a></div>
     <template v-if="!modeAdmin">
       <pull-requests-block id="data_by_user" :prs="PRs" :title="GITHUB_USER" type="user" :filter="GITHUB_USER" />
       <pull-requests-block id="data_me" :prs="PRs" :title="'@me'" type="me" :filter="GITHUB_USER" />
