@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 export default class ManifestFactory {
   static getData () {
     if (chrome && chrome.runtime) {

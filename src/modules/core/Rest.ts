@@ -4,7 +4,7 @@ import { setCache, availableInCache } from './helpers/cache';
 
 @injectable()
 export default class Rest {
-  async execute ({ url = '', cacheKey = '' }: any) {
+  async execute ({ url = '', cacheKey = '', options = {} }: any) {
     const dataFromCache = await availableInCache(cacheKey);
     if (dataFromCache) {
       return dataFromCache;
@@ -13,12 +13,20 @@ export default class Rest {
     const requestOptions: any = {
       method: 'GET',
       headers: getHeaders(),
-      redirect: 'follow'
+      redirect: 'follow',
+      ...options
     };
     const response = await fetch(url, requestOptions);
-    const result = await response.json();
+    let result;
+    try {
+      result = await response.json();
+    } catch (e) {
+      console.error(e);
+    }
 
-    await setCache(cacheKey, result);
+    if (result) {
+      await setCache(cacheKey, result);
+    }
 
     return result;
   }

@@ -5,7 +5,7 @@
   "chrome_url_overrides": {
     "newtab": "dist/index.html"
   },
-  "permissions": ["storage", "unlimitedStorage"],
+  "permissions": ["storage", "unlimitedStorage", "notifications"],
   "icons": {
     "16": "/dist/favicon-16x16.png",
     "32": "/dist/favicon-32x32.png",
