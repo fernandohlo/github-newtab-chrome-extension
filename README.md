@@ -2,6 +2,9 @@
 
 ![Captura de Pantalla 2023-06-13 a las 15 37 08](https://github.com/fernandohlo/github-newtab-chrome-extension/assets/92722052/09e110cb-8511-4a0b-8c5f-4ca58a6affda)
 
+## GITHUB_REPO
+GITHUB_REPO -> 'foo/repository'
+
 ## GITHUB_TOKEN
 GITHUB_TOKEN -> xxxxxxx
 
