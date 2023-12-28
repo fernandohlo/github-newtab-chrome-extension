@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import PullRequests from './PullRequests.vue';
-import { filterByLabel, filterByUser, filterByReviewUser, filterForAdmin } from '../services/pr/filter.js';
+import { filterByLabel, filterByUser, filterByReviewUser, filterForAdmin } from '@/modules/pr/helpers/filter';
 
 const mapTypeFactory:any = {
   user: filterByUser,

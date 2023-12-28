@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue';
-import Clock from './components/Clock.vue';
-import Dashboard from './components/Dashboard.vue';
+import { onBeforeMount } from 'vue';
+import ManifestFactory from '@/modules/manifest/factories/ManifestFactory';
+import UnsplashFactory from '@/modules/unsplash/factories/UnsplashFactory';
 
-import { getManifest } from './services/manifest.js';
-import { setUnsplashPhoto } from './services/unsplash.js';
+import Clock from '@/modules/clock/components/Clock.vue';
+import Dashboard from '@/modules/dashboard/components/Dashboard.vue';
 
-const manifestData = getManifest();
-const version = ref(manifestData.version);
+const manifestData = ManifestFactory.getData();
 
 onBeforeMount(() => {
-  setUnsplashPhoto();
+  UnsplashFactory.setPhoto();
 });
 </script>
 
@@ -18,7 +17,7 @@ onBeforeMount(() => {
   <div class="wrapper-info">
     <div class="top">
       <clock />
-      <h1>Github dashboard <em>♥ <a href="https://github.com/fernandohlo">@fernandohlo</a> | <span class="version">{{ version }}</span></em></h1>
+      <h1>Github dashboard <em>♥ <a href="https://github.com/fernandohlo">@fernandohlo</a> | <span class="version">{{ manifestData.version }}</span></em></h1>
     </div>
     <div class="end">
       <dashboard />

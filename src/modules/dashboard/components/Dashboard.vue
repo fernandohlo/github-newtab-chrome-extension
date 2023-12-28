@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
-import PullRequestsBlock from './PullRequestsBlock.vue';
-import { listPRs } from '../services/pr/repository.js';
-import { clearAll } from '../services/cache/index.js';
+import PullRequestsBlock from '@/modules/pr/components/PullRequestsBlock.vue';
+import { clearAll } from '@/modules/core/helpers/cache';
+import $serviceManager from '@/modules/core/ServiceManager';
+import PRsManager from '@/modules/pr/managers/PRsManager';
 
 const GITHUB_USER = localStorage.getItem('GITHUB_USER') || undefined;
 const GITHUB_LABEL = localStorage.getItem('GITHUB_LABEL');
@@ -14,7 +15,8 @@ const PRs = ref([]);
 const PRsCount = computed(() => PRs.value.length);
 
 onMounted(async () => {
-  PRs.value = await listPRs();
+  const prsManager = $serviceManager.resolve(PRsManager);
+  PRs.value = await prsManager.getPRs();
 
   const keysPressed:any = {};
   document.addEventListener('keydown', async (event) => {
@@ -23,7 +25,7 @@ onMounted(async () => {
     if (keysPressed.Control && event.code === 'Space') {
       PRs.value = [];
       await clearAll();
-      PRs.value = await listPRs();
+      PRs.value = await prsManager.getPRs();
       return;
     }
     if (event.code === 'Space') {
@@ -38,7 +40,7 @@ onMounted(async () => {
   setInterval(async () => {
     PRs.value = [];
     await clearAll();
-    PRs.value = await listPRs();
+    PRs.value = await prsManager.getPRs();
   }, 300000); // 5min
 });
 </script>

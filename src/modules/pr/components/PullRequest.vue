@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue';
-import User from './User.vue';
-import { getPRReview, getPR } from '../services/pr/repository.js';
+import { watch, ref, computed } from 'vue';
+import User from '@/modules/user/components/User.vue';
+import $serviceManager from '@/modules/core/ServiceManager';
+import PRsManager from '@/modules/pr/managers/PRsManager';
 
 const props = defineProps({
   item: {
@@ -13,6 +14,11 @@ const props = defineProps({
 
 const prReviews = ref<any[]>([]);
 const prInfo = ref();
+const labelBsk = computed(() => {
+  return props.item.labels.find((l:any) => {
+    return l.name.includes('BskSquad/');
+  });
+});
 
 const isImportantBranch = () => {
   return (
@@ -22,13 +28,14 @@ const isImportantBranch = () => {
 };
 
 watch(() => props.item, async (newItem) => {
-  prReviews.value = [...await getPRReview(newItem.number), ...newItem.requested_reviewers.map((user:any) => {
+  const prsManager = $serviceManager.resolve(PRsManager);
+  prReviews.value = [...await prsManager.getPRReview(newItem.number), ...newItem.requested_reviewers.map((user:any) => {
     return {
       user,
       state: 'PENDING'
     };
   })];
-  prInfo.value = await getPR(newItem.number);
+  prInfo.value = await prsManager.getPR(newItem.number);
 }, { immediate: true });
 </script>
 
@@ -37,9 +44,8 @@ watch(() => props.item, async (newItem) => {
     <span class="icon">
       <user :user="item.user" />
     </span>
-    <a :href="item.html_url">
-      {{ item.title }}<br/>
-      <span class="login">{{ item.user.login }} #{{ item.number }} > {{ prInfo.head.ref }} </span>
+    <a :href="item.html_url">{{ item.title }} <br/>
+      <span class="squad" v-if="labelBsk" :style="`background-color:#${labelBsk.color}`">{{ labelBsk.name }}</span> <span class="login">{{ item.user.login }} #{{ item.number }} > {{ prInfo.head.ref }} </span>
     </a>
     <span class="branch" :class="{ important: isImportantBranch() }">
       <b>{{ prInfo.base.ref }}</b>

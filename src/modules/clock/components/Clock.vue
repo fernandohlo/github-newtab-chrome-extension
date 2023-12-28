@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 
 const toggle = ref(false);
-const h = ref('');
-const m = ref('');
+const h = ref('00');
+const m = ref('00');
 
 const _startTime = () => {
   const today = new Date();
